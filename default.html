@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Messiah Runtime — No Entry Point</title>
+
+        <style>
+            :root {
+                --bg: #0e0e11;
+                --panel: #15151c;
+                --text: #e6e6eb;
+                --muted: #9a9ab0;
+                --accent: #7a6cff;
+                --warn: #ff6b6b;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                background: radial-gradient(circle at top, #181825, var(--bg));
+                color: var(--text);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+            }
+
+            .container {
+                max-width: 720px;
+                padding: 32px;
+                background: linear-gradient(180deg, var(--panel), #101016);
+                border-radius: 14px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            }
+
+            h1 {
+                margin: 0 0 8px;
+                font-size: 2rem;
+                letter-spacing: 0.5px;
+            }
+
+            .subtitle {
+                color: var(--muted);
+                margin-bottom: 24px;
+            }
+
+            .status {
+                padding: 14px 16px;
+                border-left: 4px solid var(--warn);
+                background: rgba(255, 107, 107, 0.08);
+                border-radius: 8px;
+                margin-bottom: 24px;
+            }
+
+            p {
+                line-height: 1.6;
+                margin: 0 0 16px;
+            }
+
+            ul {
+                margin: 12px 0 24px 20px;
+                color: var(--muted);
+            }
+
+            li {
+                margin-bottom: 8px;
+            }
+
+            .footer {
+                margin-top: 32px;
+                padding-top: 16px;
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 0.85rem;
+                color: var(--muted);
+            }
+
+            .badge {
+                color: var(--accent);
+                font-weight: 600;
+                letter-spacing: 0.4px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Messiah Runtime</h1>
+            <div class="subtitle">Malos-based project detected</div>
+
+            <div class="status">
+                <strong>Good news:</strong> Your project launched successfully.<br>
+                <strong>Bad news:</strong> Messiah has nothing to render.
+            </div>
+
+            <p>
+                Messiah is a <strong>web-first runtime</strong>.  
+                When a build starts, it looks for an <code>.html</code> entry point inside the configured build directory.
+            </p>
+
+            <p>
+                Right now, that entry point is missing.
+            </p>
+
+            <ul>
+                <li>The build directory may not be set correctly</li>
+                <li>No <code>.html</code> file exists in the build path</li>
+                <li>The file exists, but not where Messiah expects it</li>
+            </ul>
+
+            <p>
+                Once an <code>index.html</code> (or any valid HTML entry) is present,
+                Messiah will automatically load and render it no ports, no servers, no ceremony.
+            </p>
+
+            <div class="footer">
+                <span class="badge">MESSIAH RUNTIME</span>
+                <span>Silence means success.</span>
+            </div>
+        </div>
+    </body>
+</html>
