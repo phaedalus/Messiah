@@ -1,5 +1,5 @@
 import socket
-from config import LAN_MODE, PORT
+from config import LAN_MODE, PORT, MAX_MESSAGE_SIZE
 from dispatcher import handle_message
 
 def get_host():
@@ -40,29 +40,31 @@ def start_server():
                     continue
 
                 with conn:
-                    buffer = b""
-                    MAX_MSG = 64 * 1024
+                    conn.settimeout(10.0)
+                    buf = b""
 
                     while True:
-                        chunk = conn.recv(4096)
+                        try:
+                            chunk = conn.recv(4096)
+                        except socket.timeout:
+                            break
                         if not chunk:
                             break
 
-                        buffer += chunk
-                        if len(buffer) > MAX_MSG:
-                            print("[Messiah] message too large, dropping connection")
-                            buffer = b""
+                        buf += chunk
+                        if len(buf) > MAX_MESSAGE_SIZE:
+                            resp = handle_message('{"cmd"}:"_"')
+                            conn.sendall((resp + "\n").encode("utf-8"))
+                            buf = "b"
                             break
 
-                        if b"\n" in buffer:
-                            break
-
-                    if not buffer:
-                        continue
-
-                    message = buffer.decode("utf-8", errors="replace").rstrip("\n")
-                    response = handle_message(message)
-                    conn.sendall((response + "\n").encode("utf-8"))
+                        while b"\n" in buf:
+                            line, buf = buf.split(b"\n", 1)
+                            if not line.strip():
+                                continue
+                            msg = line.decode("utf-8", errors="replace")
+                            resp = handle_message(msg)
+                            conn.sendall((resp + "\n").encode("utf-8"))
 
         except KeyboardInterrupt:
             print("\n[Messiah] spinning down.")

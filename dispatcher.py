@@ -2,6 +2,7 @@ import json
 import traceback
 from protocol import make_error, make_ok
 from commands import COMMANDS
+from config import PROTOCOL_VERSION
 
 def handle_message(message: str) -> str:
     try:
@@ -22,6 +23,16 @@ def handle_message(message: str) -> str:
 
     request_id = data.get("request_id")
     cmd = data.get("cmd")
+
+    pv = data.get("protocol_version")
+    if pv is not None and pv != PROTOCOL_VERSION:
+        return json.dumps(make_error(
+            "PROTOCOL_MISMATCH",
+            f"Client protocol_version:{pv} is not supported",
+            hint=f"Use protocol_verion={PROTOCOL_VERSION}",
+            request_id=request_id
+        ))
+
 
     if not cmd:
         return json.dumps(make_error(
